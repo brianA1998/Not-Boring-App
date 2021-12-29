@@ -2,4 +2,6 @@
     <string name="app_name">AppNotSure</string>
     <string name="not_bored">Not Bored</string>
     <string name="participants">Participants</string>
+    <string name="terms_conditions_link"><u>Terms and conditions</u></string>
+    <string name="start">Start</string>
 </resources>

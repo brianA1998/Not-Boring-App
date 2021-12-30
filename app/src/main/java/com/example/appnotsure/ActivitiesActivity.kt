@@ -2,13 +2,17 @@ package com.example.appnotsure
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.example.appnotsure.databinding.ActivityActivitiesBinding
+import androidx.appcompat.widget.Toolbar
+import com.example.appnotsure.databinding.TbNotBoredBinding
+import com.example.appnotsure.listView.ActivitiesItemAdapter
+
 
 class ActivitiesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityActivitiesBinding
-    private var activityTypesList = arrayOf(
+    private lateinit var bindingToolbar: TbNotBoredBinding
+    private var activityTypesList = listOf(
         "education",
         "recreational",
         "social",
@@ -23,17 +27,23 @@ class ActivitiesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(findViewById(R.id.tb_not_bored))
+        bindingToolbar = TbNotBoredBinding.inflate(layoutInflater)
+        val toolBar: Toolbar = bindingToolbar.root
+        setSupportActionBar(toolBar)
+
         binding = ActivityActivitiesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        toolBar.title = "Activities"
         listViewInit()
 
     }
 
+
+
     private fun listViewInit() {
         listView = binding.lvActivities
-        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, activityTypesList)
+        val arrayAdapter = ActivitiesItemAdapter(this, activityTypesList)
         listView.adapter = arrayAdapter
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,53 +7,70 @@
     android:background="@color/light_blue"
     tools:context=".TermsAndConditionsFragment">
 
-    <TextView
-        android:id="@+id/tv_title_terms_conditions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.087"
-        tools:ignore="MissingConstraints" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_subtitle_terms_conditions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/not_bored"
-        android:textColor="@color/blue"
-        android:textSize="@dimen/tv_title_size"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_terms_conditions"
-        app:layout_constraintVertical_bias="0.04" />
+        <Button
+            android:id="@+id/button_close"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="350dp"
+            android:background="@drawable/rounded_corner"
+            android:cursorVisible="true"
+            android:text="@string/close"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="180dp">
 
         <TextView
-            android:id="@+id/textTermsConditions"
-            android:layout_width="360dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
-            android:text="@string/terms_conditions" />
+            android:id="@+id/tv_title_terms_conditions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/title_fragment"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
 
+        <TextView
+            android:id="@+id/tv_subtitle_terms_conditions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="120dp"
+            android:text="@string/not_bored"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/tv_title_size"
+            android:textStyle="bold" />
 
-    </ScrollView>
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="350dp"
+            android:layout_height="500dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="200dp"
+            android:scrollbars="none"
+            tools:ignore="MissingConstraints">
 
+            <TextView
+                android:id="@+id/textTermsConditions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:text="@string/terms_conditions" />
+        </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+</FrameLayout>

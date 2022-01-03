@@ -22,6 +22,7 @@ class ActivitiesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityActivitiesBinding
     private lateinit var toolbar: Toolbar
     private lateinit var listView: ListView
+    private var numberParticipants: Int = Constants.DEFAULT_NUMBER_PARTICIPANTS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,7 @@ class ActivitiesActivity : AppCompatActivity() {
         listViewInit()
 
         val bundle: Bundle? = intent.extras
-        val numberParticipants: Int = (bundle?.get(Constants.PARTICIPANTS_KEY) ?: 0) as Int
-        println("La cantidad de participantes son : $numberParticipants")
+        numberParticipants = bundle?.get(Constants.PARTICIPANTS_KEY) as Int
 
     }
 
@@ -49,7 +49,7 @@ class ActivitiesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.btn_random -> getSuggestion()
+            R.id.btn_random -> getSuggestion(numberParticipants)
         }
         val title: TextView = toolbar.findViewById(R.id.toolbar_title)
         title.text = "Random"
@@ -69,13 +69,14 @@ class ActivitiesActivity : AppCompatActivity() {
         val arrayAdapter = ActivitiesItemAdapter(this, Constants.LIST_OF_TYPES_OF_ACTIVITIES)
         listView.adapter = arrayAdapter
         listView.isClickable = true
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            getSuggestion()
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            getSuggestionByType(Constants.LIST_OF_TYPES_OF_ACTIVITIES[position], numberParticipants)
         }
 
     }
 
-    private fun getSuggestion() {
+    private fun getSuggestion(participants: Int) {
+        binding.lvActivities.visibility = View.INVISIBLE
         val progressBar: ProgressBar = binding.pbActivities
         progressBar.visibility = View.VISIBLE
 
@@ -85,7 +86,7 @@ class ActivitiesActivity : AppCompatActivity() {
 
             val call = getRetrofit()
                 .create(NotBoredApiService::class.java)
-                .getRandomActivity()
+                .getRandomActivity(participants)
 
             suggestionResponse = call.body()
 
@@ -96,8 +97,55 @@ class ActivitiesActivity : AppCompatActivity() {
                     val data = Bundle()
 
                     data.putString("name", suggestionResponse?.activity)
-                    data.putInt("participants", suggestionResponse?.participants!!)
-                    data.putDouble("price", suggestionResponse?.price)
+                    suggestionResponse?.participants?.let { data.putInt("participants", it) }
+                    suggestionResponse?.price?.let { data.putDouble("price", it) }
+                    data.putString("error", suggestionResponse?.error)
+
+                    suggestionFragment.arguments = data
+
+                    transaction.beginTransaction()
+                        .replace(R.id.frag_container, suggestionFragment)
+                        .addToBackStack("suggestionFragment")
+                        .commit()
+
+                    progressBar.visibility = View.GONE
+                    binding.lvActivities.visibility = View.VISIBLE
+                } else {
+                    Toast.makeText(this@ActivitiesActivity, "Shit happens", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun getSuggestionByType(type: String, participants: Int) {
+        val progressBar: ProgressBar = binding.pbActivities
+        progressBar.visibility = View.VISIBLE
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val suggestionResponse: BoredResponse?
+
+            val call = getRetrofit()
+                .create(NotBoredApiService::class.java)
+                .getActivityByType(type, participants)
+
+            suggestionResponse = call.body()
+
+            runOnUiThread {
+                if (call.isSuccessful) {
+
+                    val title: TextView = toolbar.findViewById(R.id.toolbar_title)
+                    title.text = suggestionResponse?.type
+
+                    val transaction = supportFragmentManager
+                    val suggestionFragment = SuggestionFragment()
+                    val data = Bundle()
+
+                    data.putString("name", suggestionResponse?.activity)
+                    suggestionResponse?.participants?.let { data.putInt("participants", it) }
+                    suggestionResponse?.price?.let { data.putDouble("price", it) }
+                    data.putString("error", suggestionResponse?.error)
 
                     suggestionFragment.arguments = data
 

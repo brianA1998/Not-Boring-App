@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.example.appnotsure.databinding.ActivityActivitiesBinding
 import com.example.appnotsure.listView.ActivitiesItemAdapter
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
@@ -19,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ActivitiesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityActivitiesBinding
+    private lateinit var toolbar: Toolbar
 
     private var activityTypesList = arrayListOf(
         "education",
@@ -39,7 +41,7 @@ class ActivitiesActivity : AppCompatActivity() {
         binding = ActivityActivitiesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar: Toolbar = findViewById<View>(R.id.toolbar) as Toolbar
+        toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         this.supportActionBar!!.setDisplayShowTitleEnabled(false);
 
@@ -52,20 +54,38 @@ class ActivitiesActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.btn_random -> getSuggestion()
+        }
+        val title: TextView = toolbar.findViewById(R.id.toolbar_title)
+        title.text = "Random"
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val title: TextView = toolbar.findViewById(R.id.toolbar_title)
+        title.text = "Activities"
+        this.supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        onBackPressed()
+        return true
+    }
+
     private fun listViewInit() {
         listView = binding.lvActivities
         val arrayAdapter = ActivitiesItemAdapter(this, activityTypesList)
         listView.adapter = arrayAdapter
         listView.isClickable = true
-        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             getSuggestion()
-
         }
 
     }
 
     private fun getSuggestion() {
+        val progressBar: ProgressBar = binding.pbActivities
+        progressBar.visibility = View.VISIBLE
 
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -93,14 +113,14 @@ class ActivitiesActivity : AppCompatActivity() {
                         .replace(R.id.frag_container, suggestionFragment)
                         .addToBackStack("suggestionFragment")
                         .commit()
+
+                    progressBar.visibility = View.GONE
                 } else {
-                    Toast.makeText(this@ActivitiesActivity, "Shit happens", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ActivitiesActivity, "Shit happens", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
-
         }
-
-
     }
 
     private fun getRetrofit(): Retrofit {

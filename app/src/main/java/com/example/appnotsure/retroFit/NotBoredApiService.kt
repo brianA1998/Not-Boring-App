@@ -9,4 +9,7 @@ interface NotBoredApiService {
     @GET
     suspend fun getActivityByType(@Url type: String) : Response<BoredResponse>
 
+    @GET("activity/")
+    suspend fun getRandomActivity() : Response<BoredResponse>
+
 }

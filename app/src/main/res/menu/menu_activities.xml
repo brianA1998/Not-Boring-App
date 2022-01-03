@@ -2,11 +2,10 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:id="@+id/btn_random"
         android:icon="@drawable/outline_shuffle_24"
-        app:showAsAction="ifRoom"
-        android:title="Random Activity"/>
-
+        android:iconTint="#FFFFFF"
+        android:title="Random Activity"
+        app:showAsAction="always" />
 </menu>

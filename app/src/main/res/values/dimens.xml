@@ -2,4 +2,5 @@
 <resources>
     <dimen name="tv_title_size">30sp</dimen>
     <dimen name="tv_participants_size">16sp</dimen>
+    <dimen name="common_width_component">320dp</dimen>
 </resources>

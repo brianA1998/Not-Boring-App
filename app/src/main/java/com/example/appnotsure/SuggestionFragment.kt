@@ -28,20 +28,29 @@ class SuggestionFragment : Fragment() {
         val tryAnother: Button = binding.btnTryAnother
 
         if (arguments != null) {
-            val name = arguments?.getString("name")
-            val participants = arguments?.getInt("participants")
-            val price = arguments?.getDouble("price")
+            val error: String? = arguments?.getString("error")
+            if(error.isNullOrEmpty()) {
 
-            activityName.text = name
-            participantsNumber.text = participants.toString()
+                val name = arguments?.getString("name")
+                val participants = arguments?.getInt("participants")
+                val price = arguments?.getDouble("price")
 
-            if (price != null) {
-                when {
-                    price == 0.0 -> activityPrice.text = "Free ${price}"
-                    price <= 0.3 -> activityPrice.text = "Low ${price}"
-                    price <= 0.6 -> activityPrice.text = "Medium ${price}"
-                    else -> activityPrice.text = "High ${price}"
+                activityName.text = name
+                participantsNumber.text = participants.toString()
+
+                if (price != null) {
+                    when {
+                        price == 0.0 -> activityPrice.text = "Free"
+                        price <= 0.3 -> activityPrice.text = "Low"
+                        price <= 0.6 -> activityPrice.text = "Medium"
+                        else -> activityPrice.text = "High"
+                    }
                 }
+            }
+            else {
+                activityName.text = error
+                binding.llActivityPrice.visibility = View.INVISIBLE
+                binding.llParticipantsNum.visibility = View.INVISIBLE
             }
         } else {
             Toast.makeText(context, "Shit happens", Toast.LENGTH_SHORT).show()

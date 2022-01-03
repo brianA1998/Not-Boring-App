@@ -7,4 +7,5 @@ data class BoredResponse(
     var participants: Int,
     var price: Double,
     var link: String,
-    var key: String)
+    var key: String,
+    var error: String)

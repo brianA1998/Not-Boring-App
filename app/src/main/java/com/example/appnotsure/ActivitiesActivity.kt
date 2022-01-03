@@ -18,19 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 class ActivitiesActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityActivitiesBinding
 
-    private var activityTypesList = arrayListOf(
-        "education",
-        "recreational",
-        "social",
-        "diy",
-        "charity",
-        "cooking",
-        "relaxation",
-        "music",
-        "busywork"
-    )
+    private lateinit var binding: ActivityActivitiesBinding
     private lateinit var listView: ListView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +34,10 @@ class ActivitiesActivity : AppCompatActivity() {
 
         listViewInit()
 
+        val bundle: Bundle? = intent.extras
+        val numberParticipants: Int = (bundle?.get(Constants.PARTICIPANTS_KEY) ?: 0) as Int
+        println("La cantidad de participantes son : $numberParticipants")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,9 +45,10 @@ class ActivitiesActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+
     private fun listViewInit() {
         listView = binding.lvActivities
-        val arrayAdapter = ActivitiesItemAdapter(this, activityTypesList)
+        val arrayAdapter = ActivitiesItemAdapter(this, Constants.LIST_OF_TYPES_OF_ACTIVITIES)
         listView.adapter = arrayAdapter
         listView.isClickable = true
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -94,7 +88,8 @@ class ActivitiesActivity : AppCompatActivity() {
                         .addToBackStack("suggestionFragment")
                         .commit()
                 } else {
-                    Toast.makeText(this@ActivitiesActivity, "Shit happens", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ActivitiesActivity, "Shit happens", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -105,7 +100,7 @@ class ActivitiesActivity : AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://www.boredapi.com/api/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

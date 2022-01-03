@@ -19,6 +19,7 @@ class SuggestionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as ActivitiesActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         binding = FragmentSuggestionBinding.inflate(inflater, container, false)
 
         val activityName: TextView = binding.tvActivityName

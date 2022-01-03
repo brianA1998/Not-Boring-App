@@ -1,6 +1,8 @@
 package com.example.appnotsure
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,13 +36,14 @@ class MainActivity : AppCompatActivity() {
         val inputText = binding.editTextParticipants
         inputText.error = null
         button.setOnClickListener {
+
             val numberParticipants: Int = Integer.parseInt(inputText.text.toString())
+
             if (numberParticipants < 1) {
-                inputText.error = "Enter the correct number of participants"
+                inputText.error = Constants.WRONG_NUMBER_OF_PARTICIPANTS_MESSAGE
                 inputText.requestFocus()
             } else {
-                //Navecion a la pantalla de activities
-                Toast.makeText(this, "Todo correcto", Toast.LENGTH_SHORT).show()
+                launchActivityActivities(numberParticipants)
             }
         }
     }
@@ -57,6 +60,19 @@ class MainActivity : AppCompatActivity() {
             hideComponents()
         }
     }
+
+    /**
+     * Navigation from home screen to screen activities
+     *
+     * @param numberParticipants is the number of app participants
+     *
+     */
+    private fun launchActivityActivities(numberParticipants: Int) {
+        val intentLaunchActivities: Intent = Intent(this, ActivitiesActivity::class.java)
+        intentLaunchActivities.putExtra(Constants.PARTICIPANTS_KEY, numberParticipants)
+        startActivity(intentLaunchActivities)
+    }
+
 
     /**
      * Hide activity components in the fragment

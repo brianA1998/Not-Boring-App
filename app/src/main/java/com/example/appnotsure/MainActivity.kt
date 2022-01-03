@@ -6,11 +6,14 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import com.example.appnotsure.databinding.ActivityMainBinding
 import java.time.Duration
 
@@ -40,12 +43,29 @@ class MainActivity : AppCompatActivity() {
             val numberParticipants: Int = Integer.parseInt(inputText.text.toString())
 
             if (numberParticipants < 1) {
+                button.isEnabled = false
                 inputText.error = Constants.WRONG_NUMBER_OF_PARTICIPANTS_MESSAGE
                 inputText.requestFocus()
             } else {
                 launchActivityActivities(numberParticipants)
             }
         }
+
+        binding.editTextParticipants.addTextChangedListener(object : TextWatcher {
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                val startButton: Button = binding.buttonStart
+                val number: Int = Integer.parseInt(s.toString())
+                startButton.isEnabled = number >= 1
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
     }
 
     /**

@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.example.appnotsure.databinding.ActivityMainBinding
 import java.time.Duration
@@ -27,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupActivityLink()
         validationParticipants()
-
     }
 
     /**
@@ -38,38 +39,46 @@ class MainActivity : AppCompatActivity() {
         val button = binding.buttonStart
         val inputText = binding.editTextParticipants
         inputText.error = null
-        button.setOnClickListener {
-
-            val numberParticipants: Int = Integer.parseInt(inputText.text.toString())
-
-            if (numberParticipants < 1) {
-                button.isEnabled = false
-                inputText.error = Constants.WRONG_NUMBER_OF_PARTICIPANTS_MESSAGE
-                inputText.requestFocus()
-            } else {
-                launchActivityActivities(numberParticipants)
-            }
-        }
-
         binding.editTextParticipants.addTextChangedListener(object : TextWatcher {
 
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                val startButton: Button = binding.buttonStart
-                val number: Int = Integer.parseInt(s.toString())
-                startButton.isEnabled = number >= 1
+            override fun beforeTextChanged(chain: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(chain: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
-            override fun afterTextChanged(p0: Editable?) {}
+                //It is verified that the input text is not null or is empty
+                if (!inputText.text.toString().isNullOrEmpty()) {
+                    val numberParticipants: Int =
+                        Integer.parseInt(inputText.text.toString())
+                    if (numberParticipants < 1) {
+                        //We disable the start button and show an error sign
+                        button.isEnabled = false
+                        inputText.error = Constants.WRONG_NUMBER_OF_PARTICIPANTS_MESSAGE
+                        inputText.requestFocus()
+                    } else {
+                        //When the start button is pressed we navigate to the activities screen
+                        button.setOnClickListener { launchActivityActivities(numberParticipants) }
+                    }
+                }
+
+
+            }
+
+            override fun afterTextChanged(chain: Editable?) {
+                //We enable button start in case of input text is null or empty
+                if (chain.isNullOrEmpty()) {
+                    binding.buttonStart.isEnabled = true
+                }
+            }
+
         })
+
+
     }
 
     /**
-     * Navigation settings the activity to fragment
+     * Configuration of the terms and conditions link to navigate from the activity to the fragment
      */
     private fun setupActivityLink() {
         val linkTextView = binding.activityIntentNavigationLink

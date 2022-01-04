@@ -51,6 +51,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="50dp"
         android:layout_marginTop="480dp"
+        android:enabled="true"
         android:text="@string/start" />
 
     <TextView

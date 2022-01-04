@@ -45,7 +45,7 @@ class SuggestionFragment : Fragment() {
         val tryAnother: Button = binding.btnTryAnother
 
         if (arguments != null) {
-            val activityType: String = arguments?.getString("activity_type") ?: ""
+            val activityType: String = arguments?.getString(Constants.ACTIVITY_TYPE_SET_KEY) ?: ""
 
             tryAnother.setOnClickListener {
                 if (activityType.isEmpty()) (activity as ActivitiesActivity).getAnotherSuggestion()
@@ -58,38 +58,39 @@ class SuggestionFragment : Fragment() {
             // corresponds to a random activity so sets the activity view group to visible
             if (activityType.isEmpty()) {
                 activityTypeLL.visibility = View.VISIBLE
-                val typeValue: String = arguments?.getString("type") ?: ""
+                val typeValue: String = arguments?.getString(Constants.ACTIVITY_TYPE_KEY) ?: ""
                 activityTypeTextView.text = capitalize(typeValue)
             } else {
                 activityTypeLL.visibility = View.INVISIBLE
             }
 
-            val error: String? = arguments?.getString("error")
+            val error: String? = arguments?.getString(Constants.ACTIVITY_ERROR_KEY)
 
             if (error.isNullOrEmpty()) {
 
-                val name = arguments?.getString("name")
-                val participants = arguments?.getInt("participants")
-                val price = arguments?.getDouble("price")
+                val name = arguments?.getString(Constants.ACTIVITY_NAME_KEY)
+                val participants = arguments?.getInt(Constants.PARTICIPANTS_NUMBER_KEY)
+                val price = arguments?.getDouble(Constants.ACTIVITY_PRICE_KEY)
 
                 activityName.text = name
                 participantsNumberTextView.text = participants.toString()
 
-                if (price != null) {
+                price?.let {
                     when {
-                        price == 0.0 -> activityPrice.text = "Free"
-                        price <= 0.3 -> activityPrice.text = "Low"
-                        price <= 0.6 -> activityPrice.text = "Medium"
-                        else -> activityPrice.text = "High"
+                        price == 0.0 -> activityPrice.text = Constants.PRICE_FREE
+                        price <= 0.3 -> activityPrice.text = Constants.PRICE_LOW
+                        price <= 0.6 -> activityPrice.text = Constants.PRICE_MEDIUM
+                        else -> activityPrice.text = Constants.PRICE_HIGH
                     }
-                }
+                } ?: run { activityPrice.text = Constants.UNKNOWN }
+
             } else {
                 activityName.text = error
                 binding.llActivityPrice.visibility = View.INVISIBLE
                 binding.llParticipantsNum.visibility = View.INVISIBLE
             }
         } else {
-            Toast.makeText(context, "Some error, try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, Constants.ERROR_DEFAULT, Toast.LENGTH_SHORT).show()
         }
 
         return binding.root

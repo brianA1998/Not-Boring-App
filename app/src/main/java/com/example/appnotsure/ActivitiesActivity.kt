@@ -106,7 +106,11 @@ class ActivitiesActivity : AppCompatActivity() {
 
                     progressBar.visibility = View.GONE
                 } else {
-                    Toast.makeText(this@ActivitiesActivity, "Some error: ${call.errorBody().toString()}", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        this@ActivitiesActivity,
+                        "Some error: ${call.errorBody().toString()}",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -141,11 +145,15 @@ class ActivitiesActivity : AppCompatActivity() {
 
                     progressBar.visibility = View.GONE
                 } else {
-                    Toast.makeText(this@ActivitiesActivity, "Some error: ${call.errorBody().toString()}", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(
+                        this@ActivitiesActivity,
+                        "Some error: ${call.errorBody().toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
+
 
     }
 
@@ -182,20 +190,20 @@ class ActivitiesActivity : AppCompatActivity() {
         val suggestionFragment = SuggestionFragment()
         val data = Bundle()
 
-        data.putInt("participants_number", numberParticipants)
-        data.putString("activity_type", type)
+        data.putInt(Constants.PARTICIPANTS_NUMBER_SET_KEY, numberParticipants)
+        data.putString(Constants.ACTIVITY_TYPE_SET_KEY, type)
 
-        data.putString("name", suggestionResponse?.activity)
-        suggestionResponse?.participants?.let { data.putInt("participants", it) }
-        suggestionResponse?.price?.let { data.putDouble("price", it) }
-        data.putString("type", suggestionResponse?.type)
-        data.putString("error", suggestionResponse?.error)
+        data.putString(Constants.ACTIVITY_NAME_KEY, suggestionResponse?.activity)
+        suggestionResponse?.participants?.let { data.putInt(Constants.PARTICIPANTS_NUMBER_KEY, it) }
+        suggestionResponse?.price?.let { data.putDouble(Constants.ACTIVITY_PRICE_KEY, it) }
+        data.putString(Constants.ACTIVITY_TYPE_KEY, suggestionResponse?.type)
+        data.putString(Constants.ACTIVITY_ERROR_KEY, suggestionResponse?.error)
 
         suggestionFragment.arguments = data
 
         transaction.beginTransaction()
             .replace(R.id.frag_container, suggestionFragment)
-            .addToBackStack("suggestionFragment")
+            .addToBackStack(Constants.FRAGMENT_NAME)
             .commit()
     }
 

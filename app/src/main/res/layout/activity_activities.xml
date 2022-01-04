@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/pb_activities"
+        android:backgroundTint="@color/blue"
         android:theme="@style/ToolbarTheme"
         app:titleTextAppearance="@style/Toolbar.TitleText">
 

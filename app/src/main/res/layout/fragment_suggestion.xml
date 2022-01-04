@@ -100,6 +100,34 @@
                 android:text="Medium" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_activity_type"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_activity_price">
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="48sp"
+                android:text="*" />
+            <TextView
+                android:id="@+id/tv_activity_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:text="Type" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_try_another"
             android:layout_width="match_parent"

@@ -6,14 +6,14 @@ object Constants {
     const val BASE_URL = "http://www.boredapi.com/api/"
     const val DEFAULT_NUMBER_PARTICIPANTS = 1
     val LIST_OF_TYPES_OF_ACTIVITIES = arrayListOf(
-        "education",
-        "recreational",
-        "social",
-        "diy",
-        "charity",
-        "cooking",
-        "relaxation",
-        "music",
-        "busywork"
+        "Education",
+        "Recreational",
+        "Social",
+        "Diy",
+        "Charity",
+        "Cooking",
+        "Relaxation",
+        "Music",
+        "Busywork"
     )
 }
